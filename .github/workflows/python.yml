@@ -5,39 +5,28 @@ on:
     branches:
       - main
 
+env:
+  APP_NAME: ${{ vars.APP_NAME }}
+  ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+
 jobs:
   build:
+
     runs-on: Linux
-
-    environment: Development
-
-    env:
-      APP_NAME: ${{ vars.APP_NAME }}
-      ENVIRONMENT: ${{ vars.ENVIRONMENT }}
 
     steps:
 
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Install Dependencies
-      run: |
-        pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-    - name: Display Environment Variables
-      run: |
-        echo "Application Name: $APP_NAME"
-        echo "Environment: $ENVIRONMENT"
+      - name: Print Variables
+        run: |
+          echo "App Name: $APP_NAME"
+          echo "Environment: $ENVIRONMENT"
 
-    - name: Run Tests
-      run: |
-        pytest
-
-    - name: Run Application
-      run: |
-        python app.py
+      - run: pytest
